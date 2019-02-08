@@ -45,7 +45,7 @@ public class CustomerService {
 		existingCustomer.setFirstName(firstname);
 		return customerRepository.save(existingCustomer);
 	}
-	/*public Customer updateLastName(Long id,String lastname){
+	public Customer updateLastName(Long id,String lastname){
 		Customer existingCustomer = get(id);
 		existingCustomer.setLastName(lastname);
 		return customerRepository.save(existingCustomer);
@@ -54,16 +54,25 @@ public class CustomerService {
 		Customer existingCustomer = get(id);
 		existingCustomer.setAge(age);
 		return customerRepository.save(existingCustomer);
-	}*/
+	}
 
 	public Customer delete(long id) {
 		Optional<Customer> customer = customerRepository.findById(id);
-		System.out.println("EEAA" + id);
 		if (!customer.isPresent()) {
 			throw new RuntimeException("customer not found");
 		}
-		System.out.println("AQAA" + id);
 		customerRepository.deleteById(id);
 		return customer.get();
+	}
+
+	public List<Customer> updateAllAge(Integer age) {
+		List<Customer> allCustomer = customerRepository.findAll();
+		for (Customer customer : allCustomer) {
+			if (customer.getAge() != null) {
+				customer.setAge(customer.getAge() + age);
+			} else customer.setAge(77);
+			customerRepository.save(customer);
+		}
+		return customerRepository.findAll();
 	}
 }

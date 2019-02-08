@@ -37,12 +37,27 @@ public class CustomerController {
 		return customerService.update(id, customer);
 	}
 
-	@PutMapping("{id}/{firstName)")
-	public Customer updateFirstName(@PathVariable long id,String firstName) {
+	@PutMapping("{id}/fn/{firstName}")
+	public Customer updateFirstName(@PathVariable long id,@PathVariable String firstName) {
 		return customerService.updateFirstName(id, firstName);
 	}
 
-	@DeleteMapping("/delete/{id}")
+	@PutMapping("{id}/ln/{lastname}")
+	public Customer updateLastName(@PathVariable long id,@PathVariable String lastname){
+		return customerService.updateLastName(id, lastname);
+	}
+
+	@PutMapping("{id}/{age}")
+	public Customer updateAge(@PathVariable  long id,@PathVariable Integer age) {
+		return customerService.updateAge(id, age);
+	}
+
+	@PutMapping("increment/{age}")
+	public List<Customer> updateAllAges(@PathVariable  Integer age) {
+		return customerService.updateAllAge(age);
+	}
+
+	@DeleteMapping("{id}")
 	public Customer delete(@PathVariable long id) {
 		System.out.println("AAAAAA");
 		return customerService.delete(id);

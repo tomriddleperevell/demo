@@ -1,6 +1,9 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "customers")
@@ -18,6 +21,19 @@ public class Customer {
 
 	@Column(name = "age")
 	private Integer age;
+
+	@JsonBackReference
+	@OneToMany
+	@JoinColumn(name = "customer_id",referencedColumnName = "id")
+	private List<Loan> loans;
+
+	public List<Loan> getLoans() {
+		return loans;
+	}
+
+	public void setLoans(List<Loan> loans) {
+		this.loans = loans;
+	}
 
 	public Long getId() {
 		return id;

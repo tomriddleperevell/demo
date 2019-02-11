@@ -18,6 +18,15 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 			"order by c.firstName DESC")
 	List<Customer> findByAge(@Param("ageFrom") int ageFrom, @Param("ageTo") int ageTo);
 
+	@Query("SELECT c FROM Customer c " +
+			"WHERE c.firstName Like :name || '%' ")
+	List<Customer> findByName(@Param ("name") String name);
+
+	@Query("SELECT c FROM Customer c " +
+			"join c.loans l " +
+			"where l.totalAmount > :totalAmount")
+	List<Customer> findByLoanTotalAmount(@Param("totalAmount") int totalAmount);
+
 	/*@Query(value = "SELECT * FROM customers c where c.age between :ageFrom and :ageTo", nativeQuery = true)
 	List<Customer> findNative(@Param("ageFrom") int ageFrom, @Param("ageTo") int ageTo);*/
 }

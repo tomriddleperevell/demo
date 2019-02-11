@@ -1,12 +1,10 @@
 package com.example.demo.controler;
 
+import com.example.demo.model.Customer;
 import com.example.demo.model.Loan;
 import com.example.demo.services.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,5 +25,21 @@ public class LoanController {
 	@GetMapping("/{id}")
 	public Loan get(@PathVariable long id) {
 		return loanService.get(id);
+	}
+
+	@PostMapping
+	public Loan add(Loan loan) {
+		return loanService.add(loan);
+	}
+
+	@PutMapping("{id}")
+	public Loan update(@PathVariable long id, Loan loan) {
+		return loanService.update(id, loan);
+	}
+
+	@GetMapping("/prefix")
+	public List<Loan> getCustomerByName(@RequestParam String name) {
+
+		return loanService.getCustomerByName(name);
 	}
 }

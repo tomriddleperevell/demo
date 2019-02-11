@@ -26,4 +26,19 @@ public class LoanService {
 		}
 		return loan.get();
 	}
+
+	public Loan add(Loan loan) {
+		return loanRepository.save(loan);
+	}
+
+	public Loan update(long id, Loan loan) {
+		Loan existingLoan = get(id);
+		existingLoan.setLeftAmount(loan.getLeftAmount());
+		existingLoan.setTotalAmount(loan.getTotalAmount());
+		return loanRepository.save(existingLoan);
+	}
+
+	public List<Loan> getCustomerByName(String name) {
+		return loanRepository.getCustomerByName(name);
+	}
 }

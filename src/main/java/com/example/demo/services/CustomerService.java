@@ -80,4 +80,12 @@ public class CustomerService {
 
 		return customerRepository.findByAge(fromAge,toAge);
 	}
+
+	public List<Customer> find(String name) {
+		return customerRepository.findByName(name);
+	}
+
+	public List<Customer> getByLoan(Integer totalAmount) {
+		return customerRepository.findByLoanTotalAmount(totalAmount);
+	}
 }

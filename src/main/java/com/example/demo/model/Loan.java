@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -20,6 +22,19 @@ public class Loan {
 
 	@Column(name = "customer_id")
 	private Long customerId;
+
+	@JsonManagedReference
+	@ManyToOne
+	@JoinColumn(name = "customer_id", referencedColumnName = "id", insertable = false, updatable = false)
+	private Customer customer;
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
 
 	public Long getCustomerId() {
 		return customerId;

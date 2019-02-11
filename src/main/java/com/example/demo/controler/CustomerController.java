@@ -67,4 +67,12 @@ public class CustomerController {
 		System.out.println("AAAAAA");
 		return customerService.delete(id);
 	}
+	@GetMapping("find")
+	public List<Customer> getPrefix(@RequestParam String name){
+		return customerService.find(name);
+	}
+	@GetMapping("findLoan")
+	public List<Customer> getByLoan(@RequestParam Integer totalAmount){
+		return customerService.getByLoan(totalAmount);
+	}
 }

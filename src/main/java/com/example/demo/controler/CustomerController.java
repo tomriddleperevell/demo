@@ -22,7 +22,12 @@ public class CustomerController {
 		return customerService.getAll();
 	}
 
-	@GetMapping("{id}")
+	@GetMapping("/search")
+	public List<Customer> getAllByAge(@RequestParam  Integer fromAge,@RequestParam  Integer toAge) {
+		return customerService.getAllByAge(fromAge,toAge);
+	}
+
+	@GetMapping("/{id}")
 	public Customer get(@PathVariable long id) {
 		return customerService.get(id);
 	}

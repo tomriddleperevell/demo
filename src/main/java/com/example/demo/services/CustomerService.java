@@ -75,4 +75,9 @@ public class CustomerService {
 		}
 		return customerRepository.findAll();
 	}
+
+	public List<Customer> getAllByAge(Integer fromAge,Integer toAge) {
+
+		return customerRepository.findByAge(fromAge,toAge);
+	}
 }

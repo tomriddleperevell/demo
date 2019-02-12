@@ -1,6 +1,5 @@
 package com.example.demo.controler;
 
-import com.example.demo.model.Customer;
 import com.example.demo.model.Loan;
 import com.example.demo.services.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +27,12 @@ public class LoanController {
 	}
 
 	@PostMapping
-	public Loan add(Loan loan) {
+	public Loan add(@RequestBody Loan loan) {
 		return loanService.add(loan);
 	}
 
 	@PutMapping("{id}")
-	public Loan update(@PathVariable long id, Loan loan) {
+	public Loan update(@PathVariable long id, @RequestBody Loan loan) {
 		return loanService.update(id, loan);
 	}
 

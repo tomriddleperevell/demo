@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.model.Contact;
 import com.example.demo.model.Customer;
 import com.example.demo.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,17 +41,20 @@ public class CustomerService {
 		existingCustomer.setAge(customer.getAge());
 		return customerRepository.save(existingCustomer);
 	}
-	public Customer updateFirstName(Long id,String firstname) {
+
+	public Customer updateFirstName(Long id, String firstname) {
 		Customer existingCustomer = get(id);
 		existingCustomer.setFirstName(firstname);
 		return customerRepository.save(existingCustomer);
 	}
-	public Customer updateLastName(Long id,String lastname){
+
+	public Customer updateLastName(Long id, String lastname) {
 		Customer existingCustomer = get(id);
 		existingCustomer.setLastName(lastname);
 		return customerRepository.save(existingCustomer);
 	}
-	public Customer updateAge(Long id,Integer age) {
+
+	public Customer updateAge(Long id, Integer age) {
 		Customer existingCustomer = get(id);
 		existingCustomer.setAge(age);
 		return customerRepository.save(existingCustomer);
@@ -76,9 +80,9 @@ public class CustomerService {
 		return customerRepository.findAll();
 	}
 
-	public List<Customer> getAllByAge(Integer fromAge,Integer toAge) {
+	public List<Customer> getAllByAge(Integer fromAge, Integer toAge) {
 
-		return customerRepository.findByAge(fromAge,toAge);
+		return customerRepository.findByAge(fromAge, toAge);
 	}
 
 	public List<Customer> find(String name) {
@@ -87,5 +91,13 @@ public class CustomerService {
 
 	public List<Customer> getByLoan(Integer totalAmount) {
 		return customerRepository.findByLoanTotalAmount(totalAmount);
+	}
+
+	public List<Contact> getAllContacts(long customerId) {
+		return customerRepository.getAllContacts(customerId);
+	}
+
+	public List<Contact> getSpecificContacts(long id, Contact.Type type) {
+		return customerRepository.getSpecificContacts(id, type);
 	}
 }

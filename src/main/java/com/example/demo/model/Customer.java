@@ -1,7 +1,5 @@
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -22,10 +20,21 @@ public class Customer {
 	@Column(name = "age")
 	private Integer age;
 
-	@JsonBackReference
 	@OneToMany
 	@JoinColumn(name = "customer_id",referencedColumnName = "id")
 	private List<Loan> loans;
+
+	@OneToMany
+	@JoinColumn(name = "customer_id",referencedColumnName = "id")
+	private List<Contact> contacts;
+
+	public List<Contact> getContacts() {
+		return contacts;
+	}
+
+	public void setContacts(List<Contact> contacts) {
+		this.contacts = contacts;
+	}
 
 	public List<Loan> getLoans() {
 		return loans;

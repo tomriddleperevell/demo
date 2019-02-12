@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface LoanRepository extends JpaRepository<Loan, Long> {
 	@Query("SELECT l FROM Loan l " +
-			"left join l.customer c " +
+			"left join Customer c on c.id = l.customerId " +
 			"where c.firstName like :name || '%'")
 	List<Loan>  getCustomerByName(@Param("name") String name);
 }

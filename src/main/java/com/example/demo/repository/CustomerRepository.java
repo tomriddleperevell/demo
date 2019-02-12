@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.model.Contact;
 import com.example.demo.model.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,12 +21,23 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
 	@Query("SELECT c FROM Customer c " +
 			"WHERE c.firstName Like :name || '%' ")
-	List<Customer> findByName(@Param ("name") String name);
+	List<Customer> findByName(@Param("name") String name);
 
 	@Query("SELECT c FROM Customer c " +
 			"join c.loans l " +
 			"where l.totalAmount > :totalAmount")
 	List<Customer> findByLoanTotalAmount(@Param("totalAmount") int totalAmount);
+
+
+	@Query("SELECT co From Contact co " +
+			"join Customer c on co.customerId = c.id " +
+			"WHERE c.id = :customerId")
+	List<Contact> getAllContacts(@Param("customerId") long customerId);
+
+	@Query("SELECT co From Contact co " +
+			"join Customer c on co.customerId = c.id " +
+			"WHERE c.id = :customerId and co.type = :type")
+	List<Contact> getSpecificContacts(@Param("customerId") long customerId, @Param("type") Contact.Type type);
 
 	/*@Query(value = "SELECT * FROM customers c where c.age between :ageFrom and :ageTo", nativeQuery = true)
 	List<Customer> findNative(@Param("ageFrom") int ageFrom, @Param("ageTo") int ageTo);*/

@@ -4,6 +4,7 @@ import com.example.demo.model.Contact;
 import com.example.demo.model.Customer;
 import com.example.demo.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,13 +20,10 @@ public class CustomerController {
 	}
 
 	@GetMapping
-	public List<Customer> getAll() {
-		return customerService.getAll();
-	}
-
-	@GetMapping("/search")
-	public List<Customer> getAllByAge(@RequestParam Integer fromAge, @RequestParam Integer toAge) {
-		return customerService.getAllByAge(fromAge, toAge);
+	public List<Customer> find(@RequestParam(required = false) String firstName,
+							   @RequestParam(required = false) Integer fromAge,
+							   @RequestParam(required = false) Integer toAge) {
+		return customerService.find(firstName, fromAge, toAge);
 	}
 
 	@GetMapping("/{id}")
@@ -68,11 +66,6 @@ public class CustomerController {
 		return customerService.delete(id);
 	}
 
-	@GetMapping("find")
-	public List<Customer> getPrefix(@RequestParam String name) {
-		return customerService.find(name);
-	}
-
 	@GetMapping("findLoan")
 	public List<Customer> getByLoan(@RequestParam Integer totalAmount) {
 		return customerService.getByLoan(totalAmount);
@@ -83,8 +76,13 @@ public class CustomerController {
 		return customerService.getAllContacts(customerId);
 	}
 
-	@GetMapping("findSpecificContact")
-	public List<Contact> getSpecificContacts(@RequestParam long id, @RequestParam Contact.Type type) {
+	@GetMapping("{customerId}/findSpecificContact")
+	public List<Contact> getSpecificContacts(@PathVariable long id, @RequestParam Contact.Type type) {
 		return customerService.getSpecificContacts(id, type);
+	}
+
+	@GetMapping("{customerId}/findValueType")
+	public Page<Object> getSpecificValue(@PathVariable long customerId, @RequestParam Contact.Type type, @RequestParam Integer page, @RequestParam Integer size) {
+		return customerService.getSpecificValue(customerId, type, page, size);
 	}
 }

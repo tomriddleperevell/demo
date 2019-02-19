@@ -17,6 +17,10 @@ public class Customer {
 	@Column(name = "last_name")
 	private String lastName;
 
+
+	@Column(name = "personal_no")
+	private String personalNo;
+
 	@Column(name = "age")
 	private Integer age;
 
@@ -30,6 +34,13 @@ public class Customer {
 
 	public List<Contact> getContacts() {
 		return contacts;
+	}
+	public String getPersonalNo() {
+		return personalNo;
+	}
+
+	public void setPersonalNo(String personalNo) {
+		this.personalNo = personalNo;
 	}
 
 	public void setContacts(List<Contact> contacts) {

@@ -1,5 +1,6 @@
 package com.example.demo.controler;
 
+import com.example.demo.model.Contact;
 import com.example.demo.model.Loan;
 import com.example.demo.services.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,10 @@ public class LoanController {
 	public List<Loan> getCustomerByName(@RequestParam String name) {
 
 		return loanService.getCustomerByName(name);
+	}
+
+	@GetMapping("contact")
+	public List<Object> getContactByTotalAmount( @RequestParam Integer total, @RequestParam Contact.Type type) {
+		return loanService.getContactByTotalAmount(total,type);
 	}
 }

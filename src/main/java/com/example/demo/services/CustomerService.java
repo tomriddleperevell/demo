@@ -4,14 +4,23 @@ import com.example.demo.model.Contact;
 import com.example.demo.model.Customer;
 import com.example.demo.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class CustomerService {
 	private CustomerRepository customerRepository;
+	@PersistenceContext
+	private EntityManager em;
 
 	@Autowired
 	public CustomerService(CustomerRepository customerRepository) {
@@ -81,12 +90,33 @@ public class CustomerService {
 	}
 
 	public List<Customer> getAllByAge(Integer fromAge, Integer toAge) {
-
 		return customerRepository.findByAge(fromAge, toAge);
 	}
 
-	public List<Customer> find(String name) {
-		return customerRepository.findByName(name);
+	public List<Customer> find(String name, Integer ageForm, Integer ageTo) {
+		String queryBuilder = "SELECT c FROM Customer c where 1 = 1";
+		Map<String, Object> params = new HashMap<>();
+		if (name != null && !name.isEmpty()) {
+			queryBuilder += " and c.firstName like :name||'%'";
+			params.put("name", name);
+		}
+		if (ageForm != null) {
+			queryBuilder += " and c.age >= :ageFrom";
+			params.put("ageFrom", ageForm);
+		}
+		if (ageTo != null) {
+			queryBuilder += " and c.age <= :ageTo";
+			params.put("ageTo", ageTo);
+		}
+
+		Query query = em.createQuery(queryBuilder, Customer.class);
+
+		params.forEach((key, value) -> {
+			query.setParameter(key, value);
+		});
+		return (List<Customer>) query.getResultList();
+
+//		return customerRepository.findByName(name);
 	}
 
 	public List<Customer> getByLoan(Integer totalAmount) {
@@ -99,5 +129,9 @@ public class CustomerService {
 
 	public List<Contact> getSpecificContacts(long id, Contact.Type type) {
 		return customerRepository.getSpecificContacts(id, type);
+	}
+
+	public Page<Object> getSpecificValue(long id, Contact.Type type, int page, int size) {
+		return customerRepository.getSpecificValue(id, type, PageRequest.of(page, size));
 	}
 }

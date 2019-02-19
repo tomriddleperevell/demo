@@ -6,7 +6,6 @@ import javax.persistence.*;
 @Table(name = "contacts")
 public class Contact {
 	public enum Type {BLANK, MOBILE, HOME_PHONE, FAX}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

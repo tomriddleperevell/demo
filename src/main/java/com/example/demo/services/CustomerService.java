@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -45,6 +46,7 @@ public class CustomerService {
 
 	public Customer update(Long id, Customer customer) {
 		Customer existingCustomer = get(id);
+		existingCustomer.setPersonalNo(customer.getPersonalNo());
 		existingCustomer.setFirstName(customer.getFirstName());
 		existingCustomer.setLastName(customer.getLastName());
 		existingCustomer.setAge(customer.getAge());
@@ -57,25 +59,24 @@ public class CustomerService {
 		return customerRepository.save(existingCustomer);
 	}
 
+	@Transactional(rollbackFor = Throwable.class)
 	public Customer updateLastName(Long id, String lastname) {
 		Customer existingCustomer = get(id);
 		existingCustomer.setLastName(lastname);
 		return customerRepository.save(existingCustomer);
 	}
 
+	@Transactional(rollbackFor = Throwable.class)
 	public Customer updateAge(Long id, Integer age) {
 		Customer existingCustomer = get(id);
 		existingCustomer.setAge(age);
 		return customerRepository.save(existingCustomer);
 	}
 
-	public Customer delete(long id) {
-		Optional<Customer> customer = customerRepository.findById(id);
-		if (!customer.isPresent()) {
-			throw new RuntimeException("customer not found");
-		}
-		customerRepository.deleteById(id);
-		return customer.get();
+	@Transactional(rollbackFor = Throwable.class)
+	public void delete(long id) {
+		Customer customer = get(id);
+		customerRepository.delete(customer);
 	}
 
 	public List<Customer> updateAllAge(Integer age) {
@@ -93,16 +94,20 @@ public class CustomerService {
 		return customerRepository.findByAge(fromAge, toAge);
 	}
 
-	public List<Customer> find(String name, Integer ageForm, Integer ageTo) {
+	public List<Customer> find(String name, String last, Integer ageFrom, Integer ageTo) {
 		String queryBuilder = "SELECT c FROM Customer c where 1 = 1";
 		Map<String, Object> params = new HashMap<>();
 		if (name != null && !name.isEmpty()) {
 			queryBuilder += " and c.firstName like :name||'%'";
 			params.put("name", name);
 		}
-		if (ageForm != null) {
+		if (last != null && !last.isEmpty()) {
+			queryBuilder += " and c.lastName like :last||'%'";
+			params.put("last", last);
+		}
+		if (ageFrom != null) {
 			queryBuilder += " and c.age >= :ageFrom";
-			params.put("ageFrom", ageForm);
+			params.put("ageFrom", ageFrom);
 		}
 		if (ageTo != null) {
 			queryBuilder += " and c.age <= :ageTo";
@@ -114,6 +119,8 @@ public class CustomerService {
 		params.forEach((key, value) -> {
 			query.setParameter(key, value);
 		});
+		/*query.setFirstResult(0);
+		query.setMaxResults(25);*/
 		return (List<Customer>) query.getResultList();
 
 //		return customerRepository.findByName(name);

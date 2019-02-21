@@ -5,6 +5,7 @@ Ext.define('DE.view.customers.SearchForm', {
 		labelAlign: 'top',
 		margin: 5
 	},
+
 	items: [{
 		xtype: 'textfield',
 		name: 'personalNo',
@@ -27,6 +28,14 @@ Ext.define('DE.view.customers.SearchForm', {
 		fieldLabel: 'ასაკამდე'
 	}],
 	buttons: [{
+		xtype: 'button',
+		text: 'დამატება',
+		handler: 'showAddCustomerWindow'
+	}, {
+		xtype: 'button',
+		text: 'წაშლა',
+		handler: 'deleteCustomer'
+	}, '->', {
 		xtype: 'button',
 		text: 'ძებნა',
 		handler: 'searchCustomers'

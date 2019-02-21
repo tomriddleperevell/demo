@@ -2,6 +2,7 @@ Ext.define('DE.view.customers.Main', {
 	extend: 'Ext.container.Container',
 	controller: {
 		xclass: 'DE.view.customers.CustomersController'
+
 	},
 	viewModel: {
 		stores: {
@@ -20,6 +21,7 @@ Ext.define('DE.view.customers.Main', {
 		reference: 'searchForm'
 	}, {
 		xclass: 'DE.view.customers.CustomersGrid',
+		reference: 'customersGrid',
 		flex: 1
-	} ]
+	}]
 });

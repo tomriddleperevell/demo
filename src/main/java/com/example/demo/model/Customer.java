@@ -24,17 +24,18 @@ public class Customer {
 	@Column(name = "age")
 	private Integer age;
 
-	@OneToMany
-	@JoinColumn(name = "customer_id",referencedColumnName = "id")
+	@OneToMany(cascade = CascadeType.REFRESH)
+	@JoinColumn(name = "customer_id", referencedColumnName = "id", insertable = false, updatable = false)
 	private List<Loan> loans;
 
-	@OneToMany
-	@JoinColumn(name = "customer_id",referencedColumnName = "id")
+	@OneToMany(cascade = CascadeType.REFRESH)
+	@JoinColumn(name = "customer_id", referencedColumnName = "id", insertable = false, updatable = false)
 	private List<Contact> contacts;
 
 	public List<Contact> getContacts() {
 		return contacts;
 	}
+
 	public String getPersonalNo() {
 		return personalNo;
 	}

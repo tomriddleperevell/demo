@@ -6,8 +6,8 @@ Ext.define('DE.view.MainView', {
 		items: [{
 			xclass: 'DE.view.main.Main'
 		}, {
-			xclass: 'DE.view.customers.Main'
-			// title : კლიენტები
+			xclass: 'DE.view.customers.Main',
+			//title : 'კლიენტდსაები'
 		}, {
 			xtype: 'panel',
 			title: 'კიდე სხვა ტაბი'

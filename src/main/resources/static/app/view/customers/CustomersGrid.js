@@ -22,5 +22,8 @@ Ext.define('DE.view.customers.CustomersGrid', {
 		text: 'ასაკი',
 		dataIndex: 'age',
 		flex: 1
-	}]
+	}],
+	listeners: {
+		itemdblclick: 'showCustomerEdit'
+	}
 });

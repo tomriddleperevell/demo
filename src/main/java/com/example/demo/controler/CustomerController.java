@@ -21,9 +21,10 @@ public class CustomerController {
 
 	@GetMapping
 	public List<Customer> find(@RequestParam(required = false) String firstName,
+							   @RequestParam(required = false) String lastName,
 							   @RequestParam(required = false) Integer fromAge,
 							   @RequestParam(required = false) Integer toAge) {
-		return customerService.find(firstName, fromAge, toAge);
+		return customerService.find(firstName, lastName, fromAge, toAge);
 	}
 
 	@GetMapping("/{id}")
@@ -39,6 +40,11 @@ public class CustomerController {
 	@PutMapping("{id}")
 	public Customer update(@PathVariable long id, @RequestBody Customer customer) {
 		return customerService.update(id, customer);
+	}
+
+	@DeleteMapping("{id}")
+	public void delete(@PathVariable long id) {
+		customerService.delete(id);
 	}
 
 	@PutMapping("{id}/fn/{firstName}")
@@ -61,11 +67,6 @@ public class CustomerController {
 		return customerService.updateAllAge(age);
 	}
 
-	@DeleteMapping("{id}")
-	public Customer delete(@PathVariable long id) {
-		return customerService.delete(id);
-	}
-
 	@GetMapping("findLoan")
 	public List<Customer> getByLoan(@RequestParam Integer totalAmount) {
 		return customerService.getByLoan(totalAmount);
@@ -77,8 +78,8 @@ public class CustomerController {
 	}
 
 	@GetMapping("{customerId}/findSpecificContact")
-	public List<Contact> getSpecificContacts(@PathVariable long id, @RequestParam Contact.Type type) {
-		return customerService.getSpecificContacts(id, type);
+	public List<Contact> getSpecificContacts(@PathVariable long customerId, @RequestParam Contact.Type type) {
+		return customerService.getSpecificContacts(customerId, type);
 	}
 
 	@GetMapping("{customerId}/findValueType")

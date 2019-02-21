@@ -32,6 +32,14 @@ public class Customer {
 	@JoinColumn(name = "customer_id", referencedColumnName = "id", insertable = false, updatable = false)
 	private List<Contact> contacts;
 
+
+
+	@OneToMany
+	@JoinColumn(name= "customer_id",referencedColumnName = "id")
+	private List<Property> propertyList;
+
+
+
 	public List<Contact> getContacts() {
 		return contacts;
 	}

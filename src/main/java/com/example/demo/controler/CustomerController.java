@@ -6,13 +6,20 @@ import com.example.demo.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
 @RequestMapping("customers")
 public class CustomerController {
 	private CustomerService customerService;
+	private static String UPLOADED_FOLDER = "/home/shalva/Desktop/destTest/";
 
 	@Autowired
 	public CustomerController(CustomerService customerService) {
@@ -36,6 +43,42 @@ public class CustomerController {
 	public Customer add(@RequestBody Customer customer) {
 		return customerService.add(customer);
 	}
+
+
+	@PostMapping("/upload") // //new annotation since 4.3
+	public String singleFileUpload(@RequestParam MultipartFile file,
+								   @RequestParam String id ) {
+
+		System.out.println("here in controller");
+		if (file.isEmpty()) {
+			//redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
+			System.out.println("file's empty");
+			return "redirect:uploadStatus";
+		}
+
+		try {
+
+			System.out.println("reading file");
+
+			// Get the file and save it somewhere
+			byte[] bytes = file.getBytes();
+			Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+
+			Files.write(path, bytes);
+			//customerService.uploadFile(path.toString(),)
+			//	redirectAttributes.addFlashAttribute("message",
+			//			"You successfully uploaded '" + file.getOriginalFilename() + "'");
+
+			customerService.uploadFile((long)Integer.parseInt(id),file.getOriginalFilename(),UPLOADED_FOLDER + file.getOriginalFilename());
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "{\"success\":false}";
+		}
+		System.out.println("in the end");
+		return "{\"success\":true}";
+		//return "redirect:/uploadStatus";
+	}
+
 
 	@PutMapping("{id}")
 	public Customer update(@PathVariable long id, @RequestBody Customer customer) {

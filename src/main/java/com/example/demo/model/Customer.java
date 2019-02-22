@@ -38,7 +38,9 @@ public class Customer {
 	@JoinColumn(name= "customer_id",referencedColumnName = "id")
 	private List<Property> propertyList;
 
-
+	@OneToMany
+	@JoinColumn(name = "customer_id",referencedColumnName = "id")
+	private List<File> files;
 
 	public List<Contact> getContacts() {
 		return contacts;

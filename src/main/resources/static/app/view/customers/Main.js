@@ -2,8 +2,8 @@ Ext.define('DE.view.customers.Main', {
 	extend: 'Ext.container.Container',
 	controller: {
 		xclass: 'DE.view.customers.CustomersController'
-
 	},
+
 	viewModel: {
 		stores: {
 			customersStore: {
@@ -12,16 +12,15 @@ Ext.define('DE.view.customers.Main', {
 		}
 	},
 	title: 'კლიენტები',
-	layout: {
-		type: 'vbox',
-		align: 'stretch'
-	},
 	items: [{
-		xclass: 'DE.view.customers.SearchForm',
-		reference: 'searchForm'
-	}, {
-		xclass: 'DE.view.customers.CustomersGrid',
-		reference: 'customersGrid',
-		flex: 1
-	}]
+		reference:"searchTab",
+		xtype: 'tabpanel',
+		items: [{
+			xclass: 'DE.view.customers.SearchTab',
+			reference: 'searchTabRef'
+
+		}]
+	}
+
+	]
 });

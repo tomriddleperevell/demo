@@ -37,12 +37,22 @@ Ext.define('DE.view.window.CustomerWindow', {
 			fieldLabel: 'ასაკი',
 			flex: 1
 		}],
+
+
+
 		buttons: [{
 			xtype: 'button',
 			text: 'შენახვა',
 			handler: 'saveCustomer'
-		}]
-	}],
+		}],
+
+
+
+	},{
+		xclass : "DE.view.customers.UploadFile",
+		reference : "uploadForm"
+	},
+	],
 	listeners: {
 		afterRender: 'onAfterRender'
 	}

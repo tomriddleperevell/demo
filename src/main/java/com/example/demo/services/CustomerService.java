@@ -2,7 +2,9 @@ package com.example.demo.services;
 
 import com.example.demo.model.Contact;
 import com.example.demo.model.Customer;
+import com.example.demo.model.File;
 import com.example.demo.repository.CustomerRepository;
+import com.example.demo.repository.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,13 +21,15 @@ import java.util.Optional;
 
 @Service
 public class CustomerService {
+	private FileRepository fileRepository;
 	private CustomerRepository customerRepository;
 	@PersistenceContext
 	private EntityManager em;
 
 	@Autowired
-	public CustomerService(CustomerRepository customerRepository) {
+	public CustomerService(CustomerRepository customerRepository,FileRepository fileRepository) {
 		this.customerRepository = customerRepository;
+		this.fileRepository = fileRepository;
 	}
 
 	public List<Customer> getAll() {
@@ -58,6 +62,8 @@ public class CustomerService {
 		existingCustomer.setFirstName(firstname);
 		return customerRepository.save(existingCustomer);
 	}
+
+
 
 	@Transactional(rollbackFor = Throwable.class)
 	public Customer updateLastName(Long id, String lastname) {
@@ -140,5 +146,13 @@ public class CustomerService {
 
 	public Page<Object> getSpecificValue(long id, Contact.Type type, int page, int size) {
 		return customerRepository.getSpecificValue(id, type, PageRequest.of(page, size));
+	}
+
+	public void uploadFile(long customerId, String filename, String fileLocation) {
+		File f = new File();
+		f.setCustomerId(customerId);
+		f.setFileLocation(fileLocation);
+		f.setFileName(filename);
+		fileRepository.save(f);
 	}
 }

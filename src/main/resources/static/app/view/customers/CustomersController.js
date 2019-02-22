@@ -22,20 +22,19 @@ Ext.define('DE.view.customers.CustomersController', {
 
 
 	showCustomerEdit: function (gridView, rec, row) {
-		log(gridView);
-		log(rec);
-		log(row);
-
-	/*
 		var me = this;
-		var customerWin = Ext.create('DE.view.window.CustomerWindow', {
+		var newTab = Ext.create('DE.view.customers.CustomerProfile',{
+				customerId : rec.getId()
+		});
+		me.lookup("searchTab").add(newTab);
+		/*var customerWin = Ext.create('DE.view.window.CustomerWindow', {
 			customerRecord: rec,
 			animateTarget: row,
 			modal: true
 		});
 
-		customerWin.show();
-		*/
+		customerWin.show();*/
+
 	},
 
 	deleteCustomer: function () {

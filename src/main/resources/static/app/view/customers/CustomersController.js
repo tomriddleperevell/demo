@@ -20,7 +20,13 @@ Ext.define('DE.view.customers.CustomersController', {
 	},
 
 
+
 	showCustomerEdit: function (gridView, rec, row) {
+		log(gridView);
+		log(rec);
+		log(row);
+
+	/*
 		var me = this;
 		var customerWin = Ext.create('DE.view.window.CustomerWindow', {
 			customerRecord: rec,
@@ -29,6 +35,7 @@ Ext.define('DE.view.customers.CustomersController', {
 		});
 
 		customerWin.show();
+		*/
 	},
 
 	deleteCustomer: function () {

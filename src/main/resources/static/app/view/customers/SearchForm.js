@@ -31,11 +31,7 @@ Ext.define('DE.view.customers.SearchForm', {
 		xtype: 'button',
 		text: 'დამატება',
 		handler: 'showAddCustomerWindow'
-	}, {
-		xtype: 'button',
-		text: 'წაშლა',
-		handler: 'deleteCustomer'
-	}, '->', {
+	},  '->', {
 		xtype: 'button',
 		text: 'ძებნა',
 		handler: 'searchCustomers'

@@ -1,12 +1,10 @@
 Ext.define('DE.view.customers.CustomersController', {
 	extend: 'Ext.app.ViewController',
 
-
 	resetSearchForm: function () {
 		var me = this;
 		me.lookup('searchForm').reset();
 	},
-
 
 	showAddCustomerWindow: function (btn) {
 		var me = this;
@@ -19,14 +17,15 @@ Ext.define('DE.view.customers.CustomersController', {
 		customerWin.show();
 	},
 
-
-
-	showCustomerEdit: function (gridView, rec, row) {
+	showCustomerEdit: function (gridView, rec) {
 		var me = this;
-		var newTab = Ext.create('DE.view.customers.CustomerProfile',{
-				customerId : rec.getId()
+		var tab = me.lookup("searchTab");
+		var newTab = Ext.create('DE.view.customers.CustomerProfile', {
+			customerId: rec.getId()
 		});
-		me.lookup("searchTab").add(newTab);
+		tab.add(newTab);
+		tab.setActiveTab(newTab);
+
 		/*var customerWin = Ext.create('DE.view.window.CustomerWindow', {
 			customerRecord: rec,
 			animateTarget: row,
@@ -34,28 +33,6 @@ Ext.define('DE.view.customers.CustomersController', {
 		});
 
 		customerWin.show();*/
-
-	},
-
-	deleteCustomer: function () {
-		var me = this;
-		var grid = me.lookup('customersGrid');
-		var rec = grid.getSelectionModel().getSelection()[0];
-		if (!rec) return;
-
-		Ext.Msg.confirm('გაფრხილება!', 'დაადასტურეთ წაშლა', function (ans) {
-			if (ans === 'yes') {
-				me.getView().setLoading();
-				rec.erase({
-					callback: function () {
-						me.getView().setLoading(false);
-					},
-					failure: function () {
-						me.getStore('customersStore').reload();
-					}
-				});
-			}
-		});
 
 	},
 

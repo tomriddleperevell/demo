@@ -2,12 +2,12 @@ package com.example.demo.controler;
 
 import com.example.demo.model.Contact;
 import com.example.demo.model.Customer;
+import com.example.demo.model.File;
 import com.example.demo.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -79,6 +79,10 @@ public class CustomerController {
 		//return "redirect:/uploadStatus";
 	}
 
+	@GetMapping("{id}/files")
+	public List<File> getFiles(@PathVariable long id) {
+		return customerService.getFiles(id);
+	}
 
 	@PutMapping("{id}")
 	public Customer update(@PathVariable long id, @RequestBody Customer customer) {

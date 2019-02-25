@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.model.Contact;
 import com.example.demo.model.Customer;
+import com.example.demo.model.File;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -46,6 +47,10 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 			"WHERE c.id = :customerId and co.type = :type " +
 			"order by  co.value DESC")
 	Page<Object> getSpecificValue(@Param ("customerId") long customerId, @Param("type") Contact.Type type, Pageable pageable);
+
+	@Query("SELECT f FROM Customer c " +
+			"JOIN c.files f ")
+	List<File> getFiles(@Param ("customerId") long customerId);
 
 	/*@Query(value = "SELECT * FROM customers c where c.age between :ageFrom and :ageTo", nativeQuery = true)
 	List<Customer> findNative(@Param("ageFrom") int ageFrom, @Param("ageTo") int ageTo);*/

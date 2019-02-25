@@ -11,38 +11,39 @@ Ext.define('DE.view.window.WindowController', {
 	saveCustomer: function () {
 		var me = this;
 		var form = me.lookup('addCustomerForm');
+		log(form);
 		form.updateRecord();
 		var rec = form.getRecord();
 		me.getView().setLoading();
 		rec.save({
 			callback: function () {
-				me.getView().setLoading(false);
 			},
 			success: function () {
+				me.getView().setLoading(false);
 				me.getView().close();
 			}
 		});
 	},
 
-	uploadFileHandler:function () {
+	uploadFileHandler: function () {
 		var me = this;
 		var uploadForm = me.lookup("uploadForm");
 		var form = me.lookup('addCustomerForm');
 		form.updateRecord();
 		var rec = form.getRecord();
-		if(uploadForm.getForm().isValid()){
+		if (uploadForm.getForm().isValid()) {
 			log("here");
-			form_action=1;
+			form_action = 1;
 			uploadForm.getForm().submit({
 				url: 'customers/upload',
 				waitMsg: 'Uploading file...',
-				params : {
-					id : rec.getId()
+				params: {
+					id: rec.getId()
 				},
-				success: function(uploadForm,action){
+				success: function (uploadForm, action) {
 					log("success");
 				},
-				failure:function () {
+				failure: function () {
 					log("failure bro");
 				}
 			});

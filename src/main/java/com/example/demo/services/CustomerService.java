@@ -155,4 +155,8 @@ public class CustomerService {
 		f.setFileName(filename);
 		fileRepository.save(f);
 	}
+
+	public List<File> getFiles(long id) {
+		return customerRepository.getFiles(id);
+	}
 }

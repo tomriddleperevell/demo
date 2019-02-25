@@ -8,7 +8,9 @@ Ext.define('DE.view.customers.Main', {
 		stores: {
 			customersStore: {
 				xclass: 'DE.store.customers.Customers'
-			}
+			},
+
+
 		}
 	},
 	title: 'კლიენტები',

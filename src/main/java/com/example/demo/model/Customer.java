@@ -42,6 +42,22 @@ public class Customer {
 	@JoinColumn(name = "customer_id",referencedColumnName = "id")
 	private List<File> files;
 
+	public List<Property> getPropertyList() {
+		return propertyList;
+	}
+
+	public void setPropertyList(List<Property> propertyList) {
+		this.propertyList = propertyList;
+	}
+
+	public List<File> getFiles() {
+		return files;
+	}
+
+	public void setFiles(List<File> files) {
+		this.files = files;
+	}
+
 	public List<Contact> getContacts() {
 		return contacts;
 	}

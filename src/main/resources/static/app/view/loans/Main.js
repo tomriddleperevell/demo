@@ -4,13 +4,13 @@ Ext.define('DE.view.loans.Main', {
 	controller: {
 		xclass: 'DE.view.loans.LoansController'
 	},
-	viewModel: {
+	/*viewModel: {
 		stores: {
 			loansStore: {
 				xclass: 'DE.store.loans.Loans'
 			}
 		}
-	},
+	},*/
 	//html: '<h1 align="center" > "loan search page" </h1>',
 	layout: {
 		type: 'vbox',

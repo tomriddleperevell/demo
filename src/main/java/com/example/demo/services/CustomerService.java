@@ -44,6 +44,15 @@ public class CustomerService {
 		return customer.get();
 	}
 
+	public File getFile(Long id){
+		Optional<File> file = fileRepository.findById(id);
+		if (!file.isPresent()) {
+			throw new RuntimeException("customer not found");
+		}
+		return file.get();
+
+	}
+
 	public Customer add(Customer customer) {
 		return customerRepository.save(customer);
 	}
@@ -84,6 +93,14 @@ public class CustomerService {
 		Customer customer = get(id);
 		customerRepository.delete(customer);
 	}
+
+	@Transactional(rollbackFor = Throwable.class)
+	public void deleteFileById(long id) {
+		File file = getFile(id);
+		fileRepository.delete(file);
+	}
+
+
 
 	public List<Customer> updateAllAge(Integer age) {
 		List<Customer> allCustomer = customerRepository.findAll();
@@ -159,4 +176,6 @@ public class CustomerService {
 	public List<File> getFiles(long id) {
 		return customerRepository.getFiles(id);
 	}
+
+
 }

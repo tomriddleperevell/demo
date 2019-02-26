@@ -48,9 +48,6 @@ Ext.define('DE.view.window.CustomerWindow', {
 
 
 
-	},{
-		xclass : "DE.view.customers.UploadFile",
-		reference : "uploadForm"
 	},
 	],
 	listeners: {

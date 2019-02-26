@@ -49,7 +49,8 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 	Page<Object> getSpecificValue(@Param ("customerId") long customerId, @Param("type") Contact.Type type, Pageable pageable);
 
 	@Query("SELECT f FROM Customer c " +
-			"JOIN c.files f ")
+			"JOIN c.files f " +
+			"WHERE c.id = :customerId")
 	List<File> getFiles(@Param ("customerId") long customerId);
 
 	/*@Query(value = "SELECT * FROM customers c where c.age between :ageFrom and :ageTo", nativeQuery = true)

@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("customers")
 public class CustomerController {
 	private CustomerService customerService;
-	private static String UPLOADED_FOLDER = "/home/shalva/Desktop/destTest/";
+	private static String UPLOADED_FOLDER = "/home/tsotne/Desktop/destTest/";
 
 	@Autowired
 	public CustomerController(CustomerService customerService) {
@@ -45,9 +45,9 @@ public class CustomerController {
 	}
 
 
-	@PostMapping("/upload") // //new annotation since 4.3
+	@PostMapping("/{customerId}/files") // //new annotation since 4.3
 	public String singleFileUpload(@RequestParam MultipartFile file,
-								   @RequestParam String id ) {
+								   @PathVariable long customerId ) {
 
 		System.out.println("here in controller");
 		if (file.isEmpty()) {
@@ -69,7 +69,7 @@ public class CustomerController {
 			//	redirectAttributes.addFlashAttribute("message",
 			//			"You successfully uploaded '" + file.getOriginalFilename() + "'");
 
-			customerService.uploadFile((long)Integer.parseInt(id),file.getOriginalFilename(),UPLOADED_FOLDER + file.getOriginalFilename());
+			customerService.uploadFile(customerId,file.getOriginalFilename(),UPLOADED_FOLDER + file.getOriginalFilename());
 		} catch (IOException e) {
 			e.printStackTrace();
 			return "{\"success\":false}";
@@ -78,6 +78,12 @@ public class CustomerController {
 		return "{\"success\":true}";
 		//return "redirect:/uploadStatus";
 	}
+
+	@DeleteMapping("/{customerId}/files/{fileId}")
+	public void deleteFileById(@PathVariable long fileId) {
+		 customerService.deleteFileById(fileId);
+	}
+
 
 	@GetMapping("{id}/files")
 	public List<File> getFiles(@PathVariable long id) {
@@ -133,4 +139,5 @@ public class CustomerController {
 	public Page<Object> getSpecificValue(@PathVariable long customerId, @RequestParam Contact.Type type, @RequestParam Integer page, @RequestParam Integer size) {
 		return customerService.getSpecificValue(customerId, type, page, size);
 	}
+
 }

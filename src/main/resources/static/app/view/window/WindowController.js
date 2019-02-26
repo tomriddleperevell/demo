@@ -25,7 +25,7 @@ Ext.define('DE.view.window.WindowController', {
 		});
 	},
 
-	uploadFileHandler: function () {
+	/*uploadFileHandler: function () {
 		var me = this;
 		var uploadForm = me.lookup("uploadForm");
 		var form = me.lookup('addCustomerForm');
@@ -49,5 +49,5 @@ Ext.define('DE.view.window.WindowController', {
 			});
 		}
 
-	}
+	} */
 });

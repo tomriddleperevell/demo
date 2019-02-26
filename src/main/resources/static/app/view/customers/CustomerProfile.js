@@ -69,44 +69,62 @@ Ext.define('DE.view.customers.CustomerProfile', {
 
 			]
 		}, {
-			xtype : 'tabpanel',
+			xtype: 'tabpanel',
+			padding: 5,
+			items: [{
 
-			padding : 5,
-			items : [
-				{
-					title : 'grid',
-					xtype: 'grid',
-					store: {
+				title: 'ფაილები',
+				xtype: 'grid',
+				listeners: {
+					itemclick: "getSelectedFile",
 
-						xclass: 'DE.store.files.File'
-					},
-					reference: 'customerFilesGrid',
-					columns: [{
-						text: 'ფაილის ხახელი',
-						dataIndex: 'fileName',
-						flex: 1
-					}]
 				},
-				{
-					title : 'meore',
-					xtype: 'grid',
-					store: {
+				tbar: [{
 
-						xclass: 'DE.store.files.File'
-					},
+					xtype: 'button',
+					text: 'წაშლა',
+					handler: "fileDelete",
 
-					columns: [{
-						text: 'ფაილის ხახელი',
-						dataIndex: 'fileName',
-						flex: 1
-					}]
+				}, {
+					xtype: 'button',
+					text: 'დამატება',
+					handler: "fileAdd",
+
+				}],
+
+				layout: {
+					type: 'hbox',
+					align: 'stretch'
+				},
+				store: {
+
+					xclass: 'DE.store.files.File'
 				},
 
+				reference: 'customerFilesGrid',
+				columns: [{
+					text: 'ფაილის ხახელი',
+					dataIndex: 'fileName',
+					flex: 1
+				}],
+
+			},
+				{
+					title: 'სესხები',
+					xclass: 'DE.view.loans.LoansGrid',
+					reference:"loansGrid",
+					bind:{
+						store:{
+							data:'{customer.loans}'
+						}
+					}
+
+
+				},
 
 
 			]
 		},
-
 
 
 	],
@@ -120,10 +138,7 @@ Ext.define('DE.view.customers.CustomerProfile', {
 			var customerRec = Ext.create('DE.model.customers.Customer', {
 				id: customerId
 			});
-
-
 			log(customerRec);
-
 			me.getViewModel().set('customer', customerRec);
 			me.getView().setLoading();
 			customerRec.load({
@@ -133,11 +148,14 @@ Ext.define('DE.view.customers.CustomerProfile', {
 				},
 				success: function (rec) {
 					// me.getView().loadRecord(customerRec);
+					log("customer record", customerRec);
+					// var loans = customerRec.get('loans');
+					// me.lookup('loansGrid').getStore().loadData(loans);
+
+					// log(loans);
 					log("succ");
 				}
 			});
-
-
 			me.lookup('customerFilesGrid').getStore().load({
 				pathParams: {
 					customerId: customerId
@@ -148,7 +166,8 @@ Ext.define('DE.view.customers.CustomerProfile', {
 			});
 
 
-			log(customerId);
+
+
 
 		},
 
@@ -175,33 +194,78 @@ Ext.define('DE.view.customers.CustomerProfile', {
 
 		},
 		updateCustomer: function (gridView, rec, row) {
-
 			var me = this;
 			var customerWin = Ext.create('DE.view.window.CustomerWindow', {
 				customerRecord: me.getViewModel().get('customer'),
 				animateTarget: me,
 				modal: true
 			});
-
 			customerWin.show();
+		},
 
-			/*
-		var rec = me.getViewModel().get('customer');
-		me.getView().setLoading();
-		rec.save({
-			callback: function () {
-				log("in update");
-				me.getView().setLoading(false);
-			},
-			success: function () {
-				me.getView().close();
-			}
-		});
+		fileAdd: function () {
+			var me = this;
+			var customerWin = me.getView();
+			var customerId = customerWin.getCustomerId();
+			var window = Ext.create('Ext.window.Window', {
 
-		*/
+
+				items: [
+					{
+						xclass: "DE.view.customers.UploadFile",
+						customerId: customerId,
+
+
+					},
+				],
+
+
+			});
+
+			window.show();
 
 
 		},
+
+		getSelectedFile: function (grid, record, item) {
+			var me = this;
+			log("in get selected");
+			log(me);
+			log(record);
+
+			me.getViewModel().set('file', record);
+		},
+
+		fileDelete: function () {
+			var me = this;
+			var rec = me.getViewModel().get('file');
+			if (!rec) return;
+			log(rec);
+
+			var customerId = me.getView().getCustomerId();
+
+			Ext.Msg.confirm('გაფრხილება!', 'დაადასტურეთ წაშლა', function (ans) {
+				if (ans === 'yes') {
+					me.getView().setLoading();
+					rec.erase({
+						pathParams: {
+							customerId: customerId
+						},
+						callback: function () {
+							me.getView().setLoading(false);
+							me.getView().close();
+						},
+						failure: function () {
+							//me.getStore('customersStore').reload();
+						}
+					});
+				}
+			});
+
+
+		}
+
+
 	}
 
 });

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
+
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
 //	List<Customer> findByAgeBetween(int ageFrom, int ageTo);

@@ -13,6 +13,10 @@ Ext.define('DE.view.MainView', {
 			title: 'კიდე სხვა ტაბი'
 		}, {
 			xclass: 'DE.view.loans.Main'
+		},{
+
+			xclass:'DE.view.users.Main',
+
 		}]
 	}]
 });

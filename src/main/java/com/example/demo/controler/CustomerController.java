@@ -6,6 +6,7 @@ import com.example.demo.model.File;
 import com.example.demo.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,9 +18,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("customers")
+@PreAuthorize("hasAuthority('manager')")
 public class CustomerController {
 	private CustomerService customerService;
 	private static String UPLOADED_FOLDER = "/home/tsotne/Desktop/destTest/";
+	//@Autowired
+	//private UserDetailsService userService;
+
+
 
 	@Autowired
 	public CustomerController(CustomerService customerService) {

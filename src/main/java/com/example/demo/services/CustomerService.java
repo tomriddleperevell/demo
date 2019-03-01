@@ -6,6 +6,8 @@ import com.example.demo.model.File;
 import com.example.demo.repository.CustomerRepository;
 import com.example.demo.repository.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -36,11 +38,18 @@ public class CustomerService {
 		return customerRepository.findAll();
 	}
 
+
+	@Cacheable(value = "customer")
 	public Customer get(Long id) {
+		long startTime = System.currentTimeMillis();
 		Optional<Customer> customer = customerRepository.findById(id);
 		if (!customer.isPresent()) {
 			throw new RuntimeException("customer not found");
 		}
+		long endTime =  System.currentTimeMillis();
+
+		System.out.println("time = ");
+		System.out.println( (endTime - startTime));
 		return customer.get();
 	}
 
@@ -52,11 +61,12 @@ public class CustomerService {
 		return file.get();
 
 	}
-
+	@CacheEvict(value= "customer",allEntries = true)
 	public Customer add(Customer customer) {
 		return customerRepository.save(customer);
 	}
 
+	@CacheEvict(value= "customer",allEntries = true)
 	public Customer update(Long id, Customer customer) {
 		Customer existingCustomer = get(id);
 		existingCustomer.setPersonalNo(customer.getPersonalNo());
@@ -65,7 +75,7 @@ public class CustomerService {
 		existingCustomer.setAge(customer.getAge());
 		return customerRepository.save(existingCustomer);
 	}
-
+	@CacheEvict(value= "customer",allEntries = true)
 	public Customer updateFirstName(Long id, String firstname) {
 		Customer existingCustomer = get(id);
 		existingCustomer.setFirstName(firstname);
@@ -73,27 +83,27 @@ public class CustomerService {
 	}
 
 
-
+	@CacheEvict(value= "customer",allEntries = true)
 	@Transactional(rollbackFor = Throwable.class)
 	public Customer updateLastName(Long id, String lastname) {
 		Customer existingCustomer = get(id);
 		existingCustomer.setLastName(lastname);
 		return customerRepository.save(existingCustomer);
 	}
-
+	@CacheEvict(value= "customer",allEntries = true)
 	@Transactional(rollbackFor = Throwable.class)
 	public Customer updateAge(Long id, Integer age) {
 		Customer existingCustomer = get(id);
 		existingCustomer.setAge(age);
 		return customerRepository.save(existingCustomer);
 	}
-
+	@CacheEvict(value= "customer",allEntries = true)
 	@Transactional(rollbackFor = Throwable.class)
 	public void delete(long id) {
 		Customer customer = get(id);
 		customerRepository.delete(customer);
 	}
-
+	@CacheEvict(value= "customer",allEntries = true)
 	@Transactional(rollbackFor = Throwable.class)
 	public void deleteFileById(long id) {
 		File file = getFile(id);
@@ -101,7 +111,7 @@ public class CustomerService {
 	}
 
 
-
+	@CacheEvict(value= "customer",allEntries = true)
 	public List<Customer> updateAllAge(Integer age) {
 		List<Customer> allCustomer = customerRepository.findAll();
 		for (Customer customer : allCustomer) {
